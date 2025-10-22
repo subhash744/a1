@@ -219,6 +219,120 @@ export const getAllBadges = (): Badge[] => {
       rarity: "legendary",
       requirement: "Special achievement",
       unlocked: false
+    },
+    // Additional New Badges
+    {
+      id: "speed-demon",
+      name: "Speed Demon",
+      description: "Site loads in under 1 second",
+      icon: "⚡",
+      rarity: "rare",
+      requirement: "Performance score 95+",
+      unlocked: false
+    },
+    {
+      id: "accessibility-champion",
+      name: "Accessibility Champion",
+      description: "Perfect accessibility score",
+      icon: "♿",
+      rarity: "epic",
+      requirement: "100% accessibility",
+      unlocked: false
+    },
+    {
+      id: "seo-master",
+      name: "SEO Master",
+      description: "Perfect SEO optimization",
+      icon: "🔍",
+      rarity: "epic",
+      requirement: "SEO score 100",
+      unlocked: false
+    },
+    {
+      id: "responsive-guru",
+      name: "Responsive Guru",
+      description: "Perfect on all devices",
+      icon: "📱",
+      rarity: "rare",
+      requirement: "Mobile-friendly design",
+      unlocked: false
+    },
+    {
+      id: "visual-stability",
+      name: "Visual Stability",
+      description: "Zero layout shifts",
+      icon: "🎯",
+      rarity: "rare",
+      requirement: "CLS score 0",
+      unlocked: false
+    },
+    {
+      id: "interaction-master",
+      name: "Interaction Master",
+      description: "Lightning-fast interactions",
+      icon: "🖱️",
+      rarity: "rare",
+      requirement: "FID under 100ms",
+      unlocked: false
+    },
+    {
+      id: "core-vitals-expert",
+      name: "Core Vitals Expert",
+      description: "All Core Web Vitals passed",
+      icon: "✅",
+      rarity: "legendary",
+      requirement: "Perfect Core Web Vitals",
+      unlocked: false
+    },
+    {
+      id: "trendsetter",
+      name: "Trendsetter",
+      description: "Featured on homepage 5 times",
+      icon: "🌟",
+      rarity: "epic",
+      requirement: "5 homepage features",
+      target: 5,
+      unlocked: false
+    },
+    {
+      id: "community-hero",
+      name: "Community Hero",
+      description: "Helped 50 other builders",
+      icon: "🦸",
+      rarity: "epic",
+      requirement: "50 helpful actions",
+      target: 50,
+      unlocked: false
+    },
+    {
+      id: "mentor",
+      name: "Mentor",
+      description: "Mentored 10 new users",
+      icon: "👨‍🏫",
+      rarity: "rare",
+      requirement: "10 mentees",
+      target: 10,
+      unlocked: false
+    },
+    {
+      id: "code-reviewer",
+      name: "Code Reviewer",
+      description: "Reviewed 100 projects",
+      icon: "🔍",
+      rarity: "rare",
+      requirement: "100 reviews",
+      target: 100,
+      unlocked: false
+    },
+    {
+      id: "bug-hunter",
+      name: "Bug Hunter",
+      description: "Found 25 bugs",
+      icon: "🐛",
+      rarity: "common",
+      requirement: "25 bugs reported",
+      target: 25,
+      unlocked: false
     }
   ]
 }

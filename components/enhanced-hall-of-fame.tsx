@@ -27,7 +27,7 @@ export function EnhancedHallOfFame({ initialUsers }: EnhancedHallOfFameProps) {
   const [joinDateFilter, setJoinDateFilter] = useState<"all" | "week" | "month" | "year">("all")
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null)
   const [isLoading, setIsLoading] = useState(true)
-  const [visibleUsers, setVisibleUsers] = useState(12)
+  const [visibleUsers, setVisibleUsers] = useState(21)
   const [hoveredUserId, setHoveredUserId] = useState<string | null>(null)
 
   // Load users on mount
@@ -132,12 +132,12 @@ export function EnhancedHallOfFame({ initialUsers }: EnhancedHallOfFameProps) {
 
   // Handle infinite scroll
   const loadMoreUsers = useCallback(() => {
-    setVisibleUsers((prev) => prev + 12)
+    setVisibleUsers((prev) => prev + 21)
   }, [])
 
   // Reset visible users when filters change
   useEffect(() => {
-    setVisibleUsers(12)
+    setVisibleUsers(21)
   }, [filteredAndSortedUsers])
 
   // Get visible users for current page
@@ -200,7 +200,7 @@ export function EnhancedHallOfFame({ initialUsers }: EnhancedHallOfFameProps) {
 
   // Render grid view
   const renderGridView = () => (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 gap-6">
       <AnimatePresence>
         {visibleUsersList.map((user) => (
           <motion.div
@@ -209,14 +209,13 @@ export function EnhancedHallOfFame({ initialUsers }: EnhancedHallOfFameProps) {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
-            whileHover={{ y: -5 }}
             className="group cursor-pointer"
             onClick={() => router.push(`/profile/${user.id}`)}
             onMouseEnter={() => setHoveredUserId(user.id)}
             onMouseLeave={() => setHoveredUserId(null)}
           >
             {/* Frame */}
-            <div className="bg-white border-8 border-[#37322F] p-4 rounded-lg shadow-lg hover:shadow-2xl transition-all duration-300">
+            <div className="bg-white border-8 border-[#37322F] p-4 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-200">
               {/* Avatar */}
               <div className="w-full aspect-square bg-gradient-to-br from-[#E0DEDB] to-[#D0CECC] rounded-lg flex items-center justify-center mb-4 overflow-hidden">
                 <div className="text-4xl font-semibold text-[#37322F]">
@@ -233,13 +232,9 @@ export function EnhancedHallOfFame({ initialUsers }: EnhancedHallOfFameProps) {
                   {user.bio || "No bio yet"}
                 </p>
 
-                {/* Badges preview */}
-                {hoveredUserId === user.id && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    className="mb-2"
-                  >
+                {/* Badges preview - always show on larger screens to prevent blinking */}
+                <div className="mb-2 min-h-[24px]">
+                  {hoveredUserId === user.id && (
                     <div className="flex flex-wrap gap-1">
                       {getUserBadges(user)
                         .filter((badge) => badge.unlocked)
@@ -259,8 +254,8 @@ export function EnhancedHallOfFame({ initialUsers }: EnhancedHallOfFameProps) {
                         </span>
                       )}
                     </div>
-                  </motion.div>
-                )}
+                  )}
+                </div>
 
                 {/* Stats */}
                 <div className="flex gap-2 text-xs text-[#605A57]">
@@ -269,18 +264,16 @@ export function EnhancedHallOfFame({ initialUsers }: EnhancedHallOfFameProps) {
                   <span>{user.upvotes} votes</span>
                 </div>
 
-                {/* View Profile button on hover */}
-                {hoveredUserId === user.id && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="mt-2"
+                {/* View Profile button - always rendered to prevent layout shift */}
+                <div className="mt-2">
+                  <button
+                    className={`w-full py-1.5 bg-[#37322F] text-white text-xs rounded hover:bg-[#2a2520] transition-opacity ${
+                      hoveredUserId === user.id ? 'opacity-100' : 'opacity-0'
+                    }`}
                   >
-                    <button className="w-full py-1.5 bg-[#37322F] text-white text-xs rounded hover:bg-[#2a2520] transition">
-                      View Profile
-                    </button>
-                  </motion.div>
-                )}
+                    View Profile
+                  </button>
+                </div>
               </div>
             </div>
           </motion.div>

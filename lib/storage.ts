@@ -227,7 +227,7 @@ export const completeDailyChallenge = (userId: string): boolean => {
     user.dailyStats.push({ date: today, xp: challenge.reward })
   }
 
-  saveUserProfile(user)
+  saveUserProfile(user, true)
   return true
 }
 
@@ -243,8 +243,8 @@ export const addFollower = (userId: string, followerId: string): boolean => {
   user.followers.push(followerId)
   follower.following.push(userId)
 
-  saveUserProfile(user)
-  saveUserProfile(follower)
+  saveUserProfile(user, user.id === getCurrentUser()?.id)
+  saveUserProfile(follower, follower.id === getCurrentUser()?.id)
   return true
 }
 
@@ -259,8 +259,8 @@ export const removeFollower = (userId: string, followerId: string): boolean => {
   user.followers = user.followers.filter((id) => id !== followerId)
   follower.following = follower.following.filter((id) => id !== userId)
 
-  saveUserProfile(user)
-  saveUserProfile(follower)
+  saveUserProfile(user, user.id === getCurrentUser()?.id)
+  saveUserProfile(follower, follower.id === getCurrentUser()?.id)
   return true
 }
 
@@ -283,7 +283,7 @@ export const addXP = (userId: string, amount: number): void => {
     user.dailyStats.push({ date: today, xp: amount })
   }
 
-  saveUserProfile(user)
+  saveUserProfile(user, user.id === getCurrentUser()?.id)
 }
 
 export const unlockAchievement = (userId: string, achievementId: string): boolean => {
@@ -294,7 +294,7 @@ export const unlockAchievement = (userId: string, achievementId: string): boolea
   if (!user || user.achievements.includes(achievementId)) return false
 
   user.achievements.push(achievementId)
-  saveUserProfile(user)
+  saveUserProfile(user, user.id === getCurrentUser()?.id)
   return true
 }
 
@@ -327,7 +327,7 @@ export const getAllUsers = (): UserProfile[] => {
   return users ? JSON.parse(users).map(migrateUserSchema) : []
 }
 
-export const saveUserProfile = (user: UserProfile) => {
+export const saveUserProfile = (user: UserProfile, setAsCurrent: boolean = false) => {
   if (typeof window === "undefined") return
   const migratedUser = migrateUserSchema(user)
   const allUsers = getAllUsers()
@@ -340,7 +340,11 @@ export const saveUserProfile = (user: UserProfile) => {
   }
 
   localStorage.setItem("allUsers", JSON.stringify(allUsers))
-  setCurrentUser(migratedUser)
+
+  // Only set as current user if explicitly requested
+  if (setAsCurrent) {
+    setCurrentUser(migratedUser)
+  }
 }
 
 export const canUpvote = (userId: string, visitorId: string): boolean => {
@@ -384,7 +388,7 @@ export const addUpvote = (userId: string, visitorId: string) => {
 
     user.badges = generateBadges(user)
     recordUpvote(userId, visitorId)
-    saveUserProfile(user)
+    saveUserProfile(user, user.id === getCurrentUser()?.id)
     return true
   }
   return false
@@ -406,7 +410,7 @@ export const addProjectUpvote = (userId: string, projectId: string, visitorId: s
   project.upvotes += 1
   upvotes[key] = Date.now()
   localStorage.setItem("upvotes", JSON.stringify(upvotes))
-  saveUserProfile(user)
+  saveUserProfile(user, user.id === getCurrentUser()?.id)
   return true
 }
 
@@ -428,7 +432,7 @@ export const incrementViewCount = (userId: string) => {
     }
 
     user.badges = generateBadges(user)
-    saveUserProfile(user)
+    saveUserProfile(user, user.id === getCurrentUser()?.id)
   }
 }
 
@@ -441,7 +445,7 @@ export const incrementProjectViews = (userId: string, projectId: string) => {
     const project = user.projects.find((p) => p.id === projectId)
     if (project) {
       project.views += 1
-      saveUserProfile(user)
+      saveUserProfile(user, user.id === getCurrentUser()?.id)
     }
   }
 }
@@ -468,8 +472,8 @@ export const addProject = (userId: string, project: Omit<Project, "id" | "upvote
     
     // Add XP for adding project
     addXP(userId, 50)
-    
-    saveUserProfile(user)
+
+    saveUserProfile(user, true)
     return newProject
   }
   return null
@@ -484,7 +488,7 @@ export const updateProject = (userId: string, projectId: string, updates: Partia
     const project = user.projects.find((p) => p.id === projectId)
     if (project) {
       Object.assign(project, updates)
-      saveUserProfile(user)
+      saveUserProfile(user, true)
       return true
     }
   }
@@ -498,7 +502,7 @@ export const deleteProject = (userId: string, projectId: string) => {
 
   if (user) {
     user.projects = user.projects.filter((p) => p.id !== projectId)
-    saveUserProfile(user)
+    saveUserProfile(user, true)
     return true
   }
   return false
@@ -620,7 +624,7 @@ export const updateStreaks = () => {
     }
 
     user.badges = generateBadges(user)
-    saveUserProfile(user)
+    saveUserProfile(user, false)
   })
 }
 
@@ -830,7 +834,7 @@ export const incrementMapClicks = (userId: string) => {
   if (user) {
     if (!user.metrics) user.metrics = { mapClicks: 0 }
     user.metrics.mapClicks += 1
-    saveUserProfile(user)
+    saveUserProfile(user, user.id === getCurrentUser()?.id)
   }
 }
 
@@ -844,7 +848,7 @@ export const updateUserLocation = (
 
   if (user) {
     user.location = location
-    saveUserProfile(user)
+    saveUserProfile(user, true)
     return true
   }
   return false
@@ -874,7 +878,7 @@ export const useStreakFreeze = (userId: string): boolean => {
 
   if (user && user.streakFreezes > 0) {
     user.streakFreezes -= 1
-    saveUserProfile(user)
+    saveUserProfile(user, user.id === getCurrentUser()?.id)
     return true
   }
   return false
@@ -887,6 +891,6 @@ export const addStreakFreeze = (userId: string): void => {
 
   if (user && user.streak >= 7) {
     user.streakFreezes = (user.streakFreezes || 0) + 1
-    saveUserProfile(user)
+    saveUserProfile(user, user.id === getCurrentUser()?.id)
   }
 }

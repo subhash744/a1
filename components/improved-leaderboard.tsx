@@ -144,12 +144,34 @@ export function ImprovedLeaderboard() {
         return newSet
       })
       
-      // Add confetti effect
-      confetti({
-        particleCount: 20,
-        spread: 30,
-        origin: { y: 0.5 }
-      })
+      // Add full-page confetti effect
+      const duration = 2000
+      const animationEnd = Date.now() + duration
+      const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 }
+
+      function randomInRange(min: number, max: number) {
+        return Math.random() * (max - min) + min
+      }
+
+      const interval: any = setInterval(function() {
+        const timeLeft = animationEnd - Date.now()
+
+        if (timeLeft <= 0) {
+          return clearInterval(interval)
+        }
+
+        const particleCount = 50 * (timeLeft / duration)
+        confetti({
+          ...defaults,
+          particleCount,
+          origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+        })
+        confetti({
+          ...defaults,
+          particleCount,
+          origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+        })
+      }, 250)
       
       // Update leaderboard data
       updateLeaderboard(sortBy)
@@ -419,96 +441,124 @@ export function ImprovedLeaderboard() {
         </div>
       )}
 
-      {/* Leaderboard List */}
+      {/* Leaderboard List - Excel Style Table */}
       <div className="px-6 py-8">
-        <div className="max-w-4xl mx-auto">
-          <AnimatePresence>
-            {remainingEntries.map((entry, index) => (
-              <motion.div
-                key={entry.userId}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3, delay: index * 0.05 }}
-                className="bg-white rounded-xl border border-[#E0DEDB] p-6 mb-4 hover:shadow-md transition cursor-pointer group"
-                onClick={() => handleViewProfile(entry.userId)}
-              >
-                <div className="flex items-start gap-4">
-                  <div className="flex-shrink-0">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#E0DEDB] to-[#D0CECC] flex items-center justify-center text-lg font-bold text-[#37322F]">
+        <div className="max-w-7xl mx-auto">
+          {/* Excel-style Table */}
+          <div className="bg-white rounded-xl border border-[#E0DEDB] overflow-hidden shadow-sm">
+            {/* Table Header */}
+            <div className="grid grid-cols-12 gap-4 bg-[#F7F5F3] border-b-2 border-[#E0DEDB] px-6 py-3 font-semibold text-[#37322F] text-sm">
+              <div className="col-span-1 text-center">Rank</div>
+              <div className="col-span-3">Builder</div>
+              <div className="col-span-1 text-center">
+                <Heart className="w-4 h-4 inline" />
+              </div>
+              <div className="col-span-1 text-center">
+                <Eye className="w-4 h-4 inline" />
+              </div>
+              <div className="col-span-1 text-center">
+                <Flame className="w-4 h-4 inline" />
+              </div>
+              <div className="col-span-2">Badges</div>
+              <div className="col-span-1 text-center">Projects</div>
+              <div className="col-span-2 text-center">Actions</div>
+            </div>
+
+            {/* Table Body */}
+            <AnimatePresence>
+              {remainingEntries.map((entry, index) => (
+                <motion.div
+                  key={entry.userId}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2, delay: index * 0.02 }}
+                  className="grid grid-cols-12 gap-4 border-b border-[#E0DEDB] px-6 py-4 hover:bg-[#F7F5F3] transition cursor-pointer items-center"
+                  onClick={() => handleViewProfile(entry.userId)}
+                >
+                  {/* Rank */}
+                  <div className="col-span-1 text-center">
+                    <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-[#E0DEDB] to-[#D0CECC] text-sm font-bold text-[#37322F]">
                       #{entry.rank}
                     </div>
                   </div>
-                  
-                  <div className="flex-1 min-w-0">
-                    <div className="flex flex-wrap items-start justify-between gap-2">
-                      <div>
-                        <h3 className="font-semibold text-[#37322F] flex items-center gap-2">
-                          {entry.displayName}
-                          <span className="text-sm font-normal text-[#605A57]">@{entry.username}</span>
-                        </h3>
-                        {entry.bio && (
-                          <p className="text-sm text-[#605A57] mt-1 line-clamp-1">
-                            {entry.bio}
-                          </p>
-                        )}
-                      </div>
-                      
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          handleUpvote(entry.userId)
-                        }}
-                        disabled={upvotedUsers.has(entry.userId)}
-                        className={`flex-shrink-0 p-2 rounded-full ${
-                          upvotedUsers.has(entry.userId) 
-                            ? "text-red-500 bg-red-50" 
-                            : "text-[#605A57] hover:bg-[#F7F5F3]"
-                        }`}
-                      >
-                        <Heart className={`w-5 h-5 ${upvotedUsers.has(entry.userId) ? "fill-current" : ""}`} />
-                      </button>
-                    </div>
-                    
-                    <div className="flex flex-wrap gap-4 mt-3 text-sm">
-                      <div className="flex items-center gap-1 text-[#605A57]">
-                        <Heart className="w-4 h-4" />
-                        <span>{entry.upvotes}</span>
-                      </div>
-                      <div className="flex items-center gap-1 text-[#605A57]">
-                        <Eye className="w-4 h-4" />
-                        <span>{entry.views}</span>
-                      </div>
-                      <div className="flex items-center gap-1 text-[#605A57]">
-                        <Flame className="w-4 h-4" />
-                        <span>{entry.streak} days</span>
-                      </div>
-                      {entry.links && entry.links.length > 0 && (
-                        <div className="flex items-center gap-1 text-[#605A57]">
-                          <Link className="w-4 h-4" />
-                          <span>{entry.links.length} links</span>
-                        </div>
+
+                  {/* Builder Info */}
+                  <div className="col-span-3">
+                    <div className="font-semibold text-[#37322F]">{entry.displayName}</div>
+                    <div className="text-xs text-[#605A57]">@{entry.username}</div>
+                  </div>
+
+                  {/* Upvotes */}
+                  <div className="col-span-1 text-center text-sm font-medium text-[#37322F]">
+                    {entry.upvotes}
+                  </div>
+
+                  {/* Views */}
+                  <div className="col-span-1 text-center text-sm font-medium text-[#37322F]">
+                    {entry.views}
+                  </div>
+
+                  {/* Streak */}
+                  <div className="col-span-1 text-center text-sm font-medium text-[#37322F]">
+                    {entry.streak}d
+                  </div>
+
+                  {/* Badges */}
+                  <div className="col-span-2">
+                    <div className="flex gap-1 flex-wrap">
+                      {entry.badges.slice(0, 3).map((badge) => (
+                        <span
+                          key={badge}
+                          className={`px-2 py-0.5 text-xs font-medium rounded ${badgeColors[badge] || "bg-gray-300"}`}
+                          title={badge}
+                        >
+                          {badge.substring(0, 3)}
+                        </span>
+                      ))}
+                      {entry.badges.length > 3 && (
+                        <span className="px-2 py-0.5 text-xs font-medium rounded bg-[#605A57] text-white">
+                          +{entry.badges.length - 3}
+                        </span>
                       )}
                     </div>
-                    
-                    {entry.badges.length > 0 && (
-                      <div className="flex gap-2 mt-3 flex-wrap">
-                        {entry.badges.slice(0, 5).map((badge) => (
-                          <span
-                            key={badge}
-                            className={`px-2 py-1 text-xs font-medium rounded-full ${badgeColors[badge] || "bg-gray-300"}`}
-                            title={badge}
-                          >
-                            {badge}
-                          </span>
-                        ))}
-                      </div>
-                    )}
                   </div>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
+
+                  {/* Projects */}
+                  <div className="col-span-1 text-center text-sm font-medium text-[#37322F]">
+                    {entry.projectCount}
+                  </div>
+
+                  {/* Actions */}
+                  <div className="col-span-2 flex gap-2 justify-center">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleUpvote(entry.userId)
+                      }}
+                      disabled={upvotedUsers.has(entry.userId)}
+                      className={`p-2 rounded-lg text-sm font-medium transition ${
+                        upvotedUsers.has(entry.userId)
+                          ? "bg-red-100 text-red-600"
+                          : "bg-[#F7F5F3] text-[#37322F] hover:bg-[#E0DEDB]"
+                      }`}
+                    >
+                      <Heart className={`w-4 h-4 ${upvotedUsers.has(entry.userId) ? "fill-current" : ""}`} />
+                    </button>
+                    <button
+                      className="px-3 py-2 bg-[#37322F] text-white text-xs rounded-lg hover:bg-[#2a2520] transition"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleViewProfile(entry.userId)
+                      }}
+                    >
+                      View
+                    </button>
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
 
           {/* Load More Button */}
           {visibleCount < filteredLeaderboard.length && (
