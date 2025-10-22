@@ -1,13 +1,10 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useParams } from "next/navigation"
 import Navigation from "@/components/navigation"
-import { ImprovedProfile } from "@/components/improved-profile"
+import { GamificationDashboard } from "@/components/gamification-dashboard"
 
-export default function ProfilePage() {
-  const params = useParams()
-  const userId = params.id as string
+export default function GamificationPage() {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -19,7 +16,7 @@ export default function ProfilePage() {
   return (
     <div className="w-full min-h-screen bg-[#F7F5F3] flex flex-col">
       <Navigation />
-      <ImprovedProfile userId={userId} />
+      <GamificationDashboard />
     </div>
   )
 }

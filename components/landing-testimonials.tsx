@@ -55,7 +55,7 @@ export function LandingTestimonials() {
           className="text-center mb-12"
         >
           <h2 className="text-4xl md:text-5xl font-serif text-[#37322F] mb-4">Loved by Creators</h2>
-          <p className="text-lg text-[#605A57]">Hear from independent makers and builders</p>
+          <p className="text-lg text-[#605A57]">Join thousands of makers building in public</p>
         </motion.div>
 
         <motion.div

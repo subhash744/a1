@@ -45,12 +45,13 @@ export function LandingShowcase() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl md:text-5xl font-serif text-[#37322F] mb-4 font-bold">Creators Building in Public</h2>
-          <p className="text-lg text-[#605A57]">Meet today's featured builders</p>
+          <h2 className="text-4xl md:text-5xl font-serif text-[#37322F] mb-4 font-bold">Featured Profiles</h2>
+          <p className="text-lg text-[#605A57]">Discover amazing creators in our community</p>
         </motion.div>
 
+        {/* Featured profiles carousel */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-3 gap-6"
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -102,6 +103,24 @@ export function LandingShowcase() {
               </div>
             </motion.div>
           ))}
+        </motion.div>
+
+        {/* View all profiles button */}
+        <motion.div
+          className="text-center"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          viewport={{ once: true }}
+        >
+          <motion.button
+            onClick={() => router.push("/leaderboard")}
+            className="px-6 py-3 border border-[#37322F] text-[#37322F] rounded-full font-medium hover:bg-[#37322F] hover:text-white transition"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            View All Profiles
+          </motion.button>
         </motion.div>
       </div>
     </section>

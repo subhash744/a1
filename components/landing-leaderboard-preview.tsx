@@ -94,7 +94,7 @@ export function LandingLeaderboardPreview() {
           className="text-center mb-12"
         >
           <h2 className="text-4xl md:text-5xl font-serif text-[#37322F] mb-4 font-bold">Live Leaderboard</h2>
-          <p className="text-lg text-[#605A57]">See who's climbing the ranks</p>
+          <p className="text-lg text-[#605A57]">See who's climbing the ranks right now</p>
         </motion.div>
 
         <motion.div

@@ -6,6 +6,7 @@ import type React from "react"
 import { useState } from "react"
 import { useRouter } from 'next/navigation'
 import { setCurrentUser, getAllUsers, generateUserId, getTodayDate } from "@/lib/storage"
+import type { UserProfile } from "@/lib/storage"
 
 interface AuthModalProps {
   onClose: () => void
@@ -56,8 +57,8 @@ export default function AuthModal({ onClose }: AuthModalProps) {
         return
       }
 
-      // <CHANGE> Updated schema to include new fields: quote, social, goal, projects, dailyUpvotes
-      const newUser = {
+      // <CHANGE> Updated schema to include all required fields
+      const newUser: UserProfile = {
         id: generateUserId(),
         username,
         displayName: username,
@@ -79,11 +80,24 @@ export default function AuthModal({ onClose }: AuthModalProps) {
         lastSeenDate: getTodayDate(),
         dailyViews: [],
         dailyUpvotes: [],
-        schemaVersion: 2,
+        schemaVersion: 4,
+        location: { lat: 0, lng: 0, city: "", country: "" },
+        metrics: { mapClicks: 0 },
+        dailyChallenge: undefined,
+        followers: [],
+        following: [],
+        xp: 0,
+        level: 1,
+        referralCode: Math.random().toString(36).substring(2, 8).toUpperCase(),
+        referralCount: 0,
+        hideLocation: false,
+        themePreference: "light" as "light" | "dark" | "gradient",
+        dailyStats: [],
+        achievements: [],
       }
 
       setCurrentUser(newUser)
-      router.push("/profile-creation")
+      router.push("/profile-creation") // Redirect to smart onboarding
       onClose()
     }
   }

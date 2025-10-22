@@ -38,7 +38,8 @@ export default function Navigation() {
         Rigeo
       </div>
 
-      <div className="flex gap-6 items-center">
+      {/* Centered navigation items */}
+      <div className="flex gap-6 items-center absolute left-1/2 transform -translate-x-1/2">
         {navItems.map((item) => (
           <button
             key={item.href}
@@ -50,7 +51,9 @@ export default function Navigation() {
             {item.label}
           </button>
         ))}
+      </div>
 
+      <div className="flex gap-4 items-center">
         {currentUser ? (
           <>
             <span className="text-sm text-[#605A57]">{currentUser.displayName}</span>

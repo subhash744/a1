@@ -9,6 +9,8 @@ import { LandingHowItWorks } from "@/components/landing-how-it-works"
 import { LandingTestimonials } from "@/components/landing-testimonials"
 import { LandingCTA } from "@/components/landing-cta"
 import { LandingFooter } from "@/components/landing-footer"
+import { LandingSocialProof } from "@/components/landing-social-proof"
+import { LandingFeatures } from "@/components/landing-features"
 import { initializeMockData } from "@/lib/init-mock-data"
 import { updateStreaks } from "@/lib/storage"
 
@@ -28,9 +30,11 @@ export default function LandingPage() {
       <Navigation />
       <main className="flex-1">
         <LandingHero />
+        <LandingHowItWorks />
+        <LandingSocialProof />
+        <LandingFeatures />
         <LandingLeaderboardPreview />
         <LandingShowcase />
-        <LandingHowItWorks />
         <LandingTestimonials />
         <LandingCTA />
       </main>

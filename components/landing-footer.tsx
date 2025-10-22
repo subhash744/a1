@@ -6,15 +6,30 @@ export function LandingFooter() {
   const footerSections = [
     {
       title: "Product",
-      links: ["Leaderboard", "Map", "Dashboard", "Hall of Fame"],
+      links: [
+        { name: "Leaderboard", href: "/leaderboard" },
+        { name: "Map", href: "/map" },
+        { name: "Dashboard", href: "/dashboard" },
+        { name: "Hall of Fame", href: "/hall" }
+      ],
     },
     {
       title: "Resources",
-      links: ["Documentation", "Blog", "Community", "Support"],
+      links: [
+        { name: "Documentation", href: "#" },
+        { name: "Blog", href: "#" },
+        { name: "Community", href: "#" },
+        { name: "Support", href: "#" }
+      ],
     },
     {
-      title: "Community",
-      links: ["Discord", "Twitter", "GitHub", "LinkedIn"],
+      title: "Company",
+      links: [
+        { name: "About", href: "#" },
+        { name: "Careers", href: "#" },
+        { name: "Contact", href: "#" },
+        { name: "Privacy", href: "#" }
+      ],
     },
   ]
 
@@ -50,17 +65,22 @@ export function LandingFooter() {
         >
           <motion.div variants={itemVariants}>
             <h3 className="font-serif text-2xl mb-4">Rigeo</h3>
-            <p className="text-white/70">Rise to the top with the creator leaderboard.</p>
+            <p className="text-white/70 mb-4">Be Seen. Get Ranked. Share Your Links.</p>
+            <div className="flex gap-4">
+              <a href="#" className="text-white/70 hover:text-white transition">Twitter</a>
+              <a href="#" className="text-white/70 hover:text-white transition">Discord</a>
+              <a href="#" className="text-white/70 hover:text-white transition">GitHub</a>
+            </div>
           </motion.div>
 
           {footerSections.map((section, idx) => (
             <motion.div key={idx} variants={itemVariants}>
               <h4 className="font-semibold mb-4">{section.title}</h4>
               <ul className="space-y-2">
-                {section.links.map((link) => (
-                  <li key={link}>
-                    <a href="#" className="text-white/70 hover:text-white transition">
-                      {link}
+                {section.links.map((link, linkIdx) => (
+                  <li key={linkIdx}>
+                    <a href={link.href} className="text-white/70 hover:text-white transition">
+                      {link.name}
                     </a>
                   </li>
                 ))}

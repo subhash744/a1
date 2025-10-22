@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import { getCurrentUser, getUserAnalytics } from "@/lib/storage"
 import Navigation from "@/components/navigation"
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
+import { EnhancedAnalyticsDashboard } from "@/components/enhanced-analytics-dashboard"
 
 export default function DashboardPage() {
   const router = useRouter()
@@ -64,77 +65,9 @@ export default function DashboardPage() {
           ))}
         </div>
 
-        {/* Overview Tab */}
+        {/* Overview Tab - Enhanced Analytics Dashboard */}
         {activeTab === "overview" && (
-          <>
-            {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-              <div className="bg-white p-6 rounded-lg border border-[#E0DEDB]">
-                <div className="text-sm text-[#605A57] mb-2">Total Views</div>
-                <div className="text-3xl font-semibold text-[#37322F]">{analytics.totalViews}</div>
-              </div>
-              <div className="bg-white p-6 rounded-lg border border-[#E0DEDB]">
-                <div className="text-sm text-[#605A57] mb-2">Total Upvotes</div>
-                <div className="text-3xl font-semibold text-[#37322F]">{analytics.totalUpvotes}</div>
-              </div>
-              <div className="bg-white p-6 rounded-lg border border-[#E0DEDB]">
-                <div className="text-sm text-[#605A57] mb-2">Weekly Views</div>
-                <div className="text-3xl font-semibold text-[#37322F]">{analytics.weeklyViews}</div>
-              </div>
-              <div className="bg-white p-6 rounded-lg border border-[#E0DEDB]">
-                <div className="text-sm text-[#605A57] mb-2">Streak</div>
-                <div className="text-3xl font-semibold text-[#37322F]">{analytics.streak} days</div>
-              </div>
-            </div>
-
-            {/* Charts */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-              <div className="bg-white p-6 rounded-lg border border-[#E0DEDB]">
-                <h2 className="text-lg font-semibold text-[#37322F] mb-4">Weekly Views</h2>
-                <ResponsiveContainer width="100%" height={300}>
-                  <BarChart data={analytics.dailyData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#E0DEDB" />
-                    <XAxis dataKey="date" stroke="#605A57" />
-                    <YAxis stroke="#605A57" />
-                    <Tooltip contentStyle={{ backgroundColor: "#F7F5F3", border: "1px solid #E0DEDB" }} />
-                    <Bar dataKey="views" fill="#37322F" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-
-              <div className="bg-white p-6 rounded-lg border border-[#E0DEDB]">
-                <h2 className="text-lg font-semibold text-[#37322F] mb-4">Weekly Upvotes</h2>
-                <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={analytics.dailyData}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#E0DEDB" />
-                    <XAxis dataKey="date" stroke="#605A57" />
-                    <YAxis stroke="#605A57" />
-                    <Tooltip contentStyle={{ backgroundColor: "#F7F5F3", border: "1px solid #E0DEDB" }} />
-                    <Line type="monotone" dataKey="upvotes" stroke="#37322F" strokeWidth={2} />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
-
-            {/* Badges */}
-            <div className="bg-white p-6 rounded-lg border border-[#E0DEDB]">
-              <h2 className="text-lg font-semibold text-[#37322F] mb-4">Your Badges</h2>
-              <div className="flex flex-wrap gap-3">
-                {analytics.badges.length > 0 ? (
-                  analytics.badges.map((badge: string) => (
-                    <div
-                      key={badge}
-                      className={`${badgeColors[badge] || "bg-gray-300"} text-white px-4 py-2 rounded-full text-sm font-semibold`}
-                    >
-                      {badge}
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-[#605A57]">No badges yet. Keep building to earn badges!</p>
-                )}
-              </div>
-            </div>
-          </>
+          <EnhancedAnalyticsDashboard userId={currentUser.id} />
         )}
 
         {/* Projects Tab */}

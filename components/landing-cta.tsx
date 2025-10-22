@@ -36,8 +36,8 @@ export function LandingCTA() {
           viewport={{ once: true }}
           className="max-w-2xl mx-auto text-center"
         >
-          <h2 className="text-4xl md:text-5xl font-serif text-[#37322F] mb-6 font-bold">Ready to Rise with Rigeo?</h2>
-          <p className="text-lg text-[#605A57] mb-8">Join creators climbing the leaderboard and building in public.</p>
+          <h2 className="text-4xl md:text-5xl font-serif text-[#37322F] mb-6 font-bold">Ready to be seen?</h2>
+          <p className="text-lg text-[#605A57] mb-8">It's free. Takes 2 minutes.</p>
 
           <motion.button
             onClick={handleJoinNow}

@@ -79,12 +79,11 @@ export function LandingHero() {
             className="text-5xl md:text-7xl font-serif text-[#37322F] mb-6 leading-tight"
             variants={itemVariants}
           >
-            Rise to the Top
+            Be Seen. Get Ranked. Share Your Links.
           </motion.h1>
 
           <motion.p className="text-lg md:text-xl text-[#605A57] mb-8 max-w-2xl mx-auto" variants={itemVariants}>
-            Build your profile, showcase your talents, and compete on the leaderboard. Connect with creators and climb
-            the ranks.
+            Join the daily leaderboard. Get discovered. Grow your audience.
           </motion.p>
 
           <motion.div className="flex gap-4 justify-center mb-16 flex-wrap" variants={itemVariants}>
@@ -106,11 +105,24 @@ export function LandingHero() {
             </motion.button>
           </motion.div>
 
+          {/* Updated feature cards as per requirements */}
           <motion.div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto" variants={itemVariants}>
             {[
-              { icon: "🏆", title: "Compete", desc: "Climb the leaderboard and earn badges" },
-              { icon: "👥", title: "Connect", desc: "Share your profile and build your network" },
-              { icon: "⭐", title: "Showcase", desc: "Display your projects and achievements" },
+              { 
+                icon: "👤", 
+                title: "Create Your Profile", 
+                desc: "Add your bio, avatar, and important links" 
+              },
+              { 
+                icon: "🏆", 
+                title: "Get Discovered", 
+                desc: "Appear on daily leaderboards as visitors find you" 
+              },
+              { 
+                icon: "⭐", 
+                title: "Climb the Ranks", 
+                desc: "Earn upvotes and badges as your presence grows" 
+              },
             ].map((feature, idx) => (
               <motion.div
                 key={idx}
