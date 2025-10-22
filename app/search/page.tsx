@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useMemo } from "react"
+import { useState, useEffect, useMemo, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import Navigation from "@/components/navigation"
 import { getAllUsers, type UserProfile, type Project } from "@/lib/storage"
@@ -13,7 +13,7 @@ interface SearchResult {
   userId?: string
 }
 
-export default function SearchResultsPage() {
+function SearchResultsContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const query = searchParams.get("q") || ""
@@ -264,5 +264,32 @@ export default function SearchResultsPage() {
         )}
       </div>
     </div>
+  )
+}
+
+export default function SearchResultsPage() {
+  return (
+    <Suspense fallback={
+      <div className="w-full min-h-screen bg-[#F7F5F3]">
+        <Navigation />
+        <div className="max-w-4xl mx-auto px-6 py-12">
+          <div className="h-8 bg-[#E0DEDB] rounded mb-8 animate-pulse w-1/3"></div>
+          <div className="space-y-6">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="bg-white rounded-lg border border-[#E0DEDB] p-6">
+                <div className="h-6 bg-[#E0DEDB] rounded mb-4 animate-pulse w-1/4"></div>
+                <div className="space-y-3">
+                  {[1, 2].map((j) => (
+                    <div key={j} className="h-4 bg-[#E0DEDB] rounded animate-pulse"></div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    }>
+      <SearchResultsContent />
+    </Suspense>
   )
 }
