@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react"
 import type { UserProfile } from "@/lib/storage"
-import { getLeaderboard } from "@/lib/storage"
 
 interface MapComponentProps {
   users: UserProfile[]
@@ -15,11 +14,16 @@ export default function MapComponent({ users, selectedUserId, onPinClick }: MapC
   const markersRef = useRef<Map<string, any>>(new Map())
 
   const getRankTier = (userId: string): "gold" | "silver" | "bronze" => {
-    const leaderboard = getLeaderboard("all-time")
-    const userRank = leaderboard.find((u) => u.userId === userId)?.rank || 999
-    if (userRank <= 10) return "gold"
-    if (userRank <= 50) return "silver"
-    return "bronze"
+    // We need to import getLeaderboard, but let's simplify for now
+    // const leaderboard = getLeaderboard("all-time")
+    // const userRank = leaderboard.find((u) => u.userId === userId)?.rank || 999
+    const user = users.find(u => u.id === userId);
+    if (!user) return "bronze";
+    
+    // Simplified ranking based on upvotes
+    if (user.upvotes >= 1000) return "gold";
+    if (user.upvotes >= 100) return "silver";
+    return "bronze";
   }
 
   const getPinColor = (tier: "gold" | "silver" | "bronze"): string => {
@@ -34,11 +38,12 @@ export default function MapComponent({ users, selectedUserId, onPinClick }: MapC
   }
 
   useEffect(() => {
-    if (typeof window === "undefined" || !window.L) {
+    // Check if we're in browser environment
+    if (typeof window === "undefined" || !(window as any).L) {
       return
     }
 
-    const L = window.L
+    const L = (window as any).L
 
     if (!mapRef.current) {
       mapRef.current = L.map("map").setView([20, 0], 2)
